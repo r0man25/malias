@@ -12,12 +12,24 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "bower-asset/jquery": "1.11.3",
+        "bower-asset/bootstrap": "3.3.6",
+        "bower-asset/font-awesome": "4.5.0",
+        "bower-asset/owl.carousel1": "1.3.3",
+        "bower-asset/nivo-slider": "3.2",
+        "bower-asset/jquery.meanmenu": "*",
+        "bower-asset/jquery-ui": "1.11.4",
+        "bower-asset/animate-css": "3.4.0",
+        "bower-asset/html5-boilerplate": "5.2.0",
+        "bower-asset/wow": "1.1.2",
+        "bower-asset/scrollup": "2.4.1",
+        "bower-asset/jquery.countdown": "2.1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

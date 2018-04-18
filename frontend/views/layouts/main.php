@@ -5,10 +5,9 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -37,11 +36,10 @@ AppAsset::register($this);
                     <div class="top-menu">
                         <!-- Start Language -->
                         <ul class="language">
-                            <li><a href="#"><img class="right-5" src="img/flags/gb.png" alt="#">English<i class="fa fa-caret-down left-5"></i></a>
+                            <li><a href="#"><img class="right-5" src="/img/flags/en.png" alt="#">English<i class="fa fa-caret-down left-5"></i></a>
                                 <ul>
-                                    <li><a href="#"><img class="right-5" src="img/flags/fr.png" alt="#">French</a></li>
-                                    <li><a href="#"><img class="right-5" src="img/flags/gb.png" alt="#">English</a></li>
-                                    <li><a href="#"><img class="right-5" src="img/flags/gb.png" alt="#">English</a></li>
+                                    <li><a href="#"><img class="right-5" src="/img/flags/en.png" alt="#">English</a></li>
+                                    <li><a href="#"><img class="right-5" src="/img/flags/ua.png" alt="#">Ukraine</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -153,7 +151,7 @@ AppAsset::register($this);
             <div class="row">
                 <div class="col-md-3 col-sm-12">
                     <div class="logo">
-                        <a href="index.html" title="Malias"><img src="img/logo.png" alt="Malias"></a>
+                        <a href="<?= Url::to(['/site/index']) ?>" title="Malias"><img src="/img/logo.png" alt="Malias"></a>
                     </div>
                 </div>
                 <div class="col-md-9 col-sm-12">
@@ -201,7 +199,7 @@ AppAsset::register($this);
                                     <div class="mini-cart-content">
                                         <div class="cart-img-details">
                                             <div class="cart-img-photo">
-                                                <a href="#"><img src="img/product/total-cart.jpg" alt="#"></a>
+                                                <a href="#"><img src="/img/product/total-cart.jpg" alt="#"></a>
                                             </div>
                                             <div class="cart-img-content">
                                                 <a href="#"><h4>Prod Aldults</h4></a>
@@ -217,7 +215,7 @@ AppAsset::register($this);
                                         <div class="clear"></div>
                                         <div class="cart-img-details">
                                             <div class="cart-img-photo">
-                                                <a href="#"><img src="img/product/total-cart2.jpg" alt="#"></a>
+                                                <a href="#"><img src="/img/product/total-cart2.jpg" alt="#"></a>
                                             </div>
                                             <div class="cart-img-content">
                                                 <a href="#"><h4>Fact Prone</h4></a>
@@ -417,7 +415,7 @@ AppAsset::register($this);
                     <div class="copyright">
                         <p>Copyright &copy; Взято с <a href="http://bayguzin.ru" target="_blank"> bayguzin.ru</a> All rights reserved.</p>
                         <div class="payment">
-                            <a href="#"><img src="img/payment.png" alt="Payment"></a>
+                            <a href="#"><img src="/img/payment.png" alt="Payment"></a>
                         </div>
                     </div>
                 </div>

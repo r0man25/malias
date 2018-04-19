@@ -64,13 +64,13 @@ AppAsset::register($this);
                         <?php
 
                         if (Yii::$app->user->isGuest) {
-                            $menuItems[] = ['label' => Html::tag('i', null, ['class' => 'fa fa-share']).' Signup', 'url' => ['/site/signup']];
-                            $menuItems[] = ['label' => Html::tag('i', null, ['class' => 'fa fa-unlock-alt']).' Login', 'url' => ['/site/login']];
+                            $menuItems[] = ['label' => Html::tag('i', null, ['class' => 'fa fa-share']).' Signup', 'url' => ['/user/default/signup']];
+                            $menuItems[] = ['label' => Html::tag('i', null, ['class' => 'fa fa-unlock-alt']).' Login', 'url' => ['/user/default/login']];
                         } else {
                             $menuItems[] = ['label' => Html::tag('i', null, ['class' => 'fa fa-user']).' My Account', 'url' => ['/site/about']];
                             $menuItems[] = ['label' => Html::tag('i', null, ['class' => 'fa fa-heart']).' Wish List (0)', 'url' => ['/site/about']];
                             $menuItems[] = '<li>'
-                                . Html::beginForm(['/site/logout'], 'post')
+                                . Html::beginForm(['/user/default/logout'], 'post')
                                 . Html::tag('i', null, ['class' => 'fa fa-unlock-alt'])
                                 . Html::submitButton(
                                     'Logout (' . Yii::$app->user->identity->username . ')'
@@ -330,10 +330,10 @@ AppAsset::register($this);
 
 <!-- CONTENT-AREA START -->
 <div id="main-content">
-    <div class="container">
+<!--    <div class="container">-->
     <?= Alert::widget() ?>
     <?= $content ?>
-    </div>
+<!--    </div>-->
 </div>
 <!-- CONTENT-AREA END -->
 <!-- FOOTER-AREA START -->

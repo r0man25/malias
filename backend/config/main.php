@@ -11,7 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'category' => [
+            'class' => 'backend\modules\category\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -41,6 +45,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'category' => 'category/manage/index',
+                'category/main-category' => 'category/manage/main-categories',
+                'category/subcategory' => 'category/manage/subcategories',
+                'category/create' => 'category/manage/create',
+                'category/update/<id:\d+>' => 'category/manage/update',
+                'category/<id:\d+>' => 'category/manage/view',
             ],
         ],
     ],

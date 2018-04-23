@@ -46,6 +46,12 @@ class Category extends \yii\db\ActiveRecord
         return ArrayHelper::map($parentCategory, 'id', 'title');
     }
 
+    public static function getMainCategoriesAsArray()
+    {
+        $parentCategory = self::find()->where('parent_id IS NULL')->asArray()->all();
+        return ArrayHelper::map($parentCategory, 'id', 'title');
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -3,7 +3,6 @@
 namespace backend\modules\category\models\forms;
 
 use backend\models\Category;
-use Yii;
 use yii\base\Model;
 /**
  * Created by PhpStorm.

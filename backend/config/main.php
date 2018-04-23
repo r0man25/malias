@@ -15,6 +15,9 @@ return [
         'category' => [
             'class' => 'backend\modules\category\Module',
         ],
+        'attr' => [
+            'class' => 'backend\modules\attr\Module',
+        ],
     ],
     'components' => [
         'request' => [

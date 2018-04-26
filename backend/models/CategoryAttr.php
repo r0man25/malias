@@ -63,7 +63,6 @@ class CategoryAttr extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Attr::className(), ['id' => 'attr_id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */

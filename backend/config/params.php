@@ -1,5 +1,9 @@
 <?php
 return [
     'adminEmail' => 'admin@example.com',
-    'attrType' => ['string', 'integer', 'date'],
+    'attrType' => [
+        'string' => 'string',
+        'integer' => 'integer',
+        'date' => 'date',
+    ],
 ];

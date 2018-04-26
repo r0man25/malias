@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Attr */
@@ -12,27 +14,31 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+<!--    --><?//= $form->field($model, 'mainCategory')
+//        ->checkboxList($parentCategories)
+//        ->label('Main category');?>
+
+    <?= $form->field($model, 'mainCategory')
+        ->checkboxList([5 => 'qwe', 15=> 'xzc'])
+        ->label('Main category');?>
+
     <?= $form->field($model, 'category_id')
-            ->dropDownList($categories, ['prompt' => ''])->label('Main category');?>
+            ->checkboxList([])
+            ->label(false)?>
 
-    <?= Html::dropDownList('main-category', [], [
-        '/attr/manage/like' => 'asd'
-    ]) ?>
+    <?= $form->field($model, 'parent_id')
+            ->checkboxList([])
+            ->label(false) ?>
 
 
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true])->label('Attribute name') ?>
 
+    <?= $form->field($model, 'type')
+            ->dropDownList(Yii::$app->params['attrType'], ['prompt' => ''])->label('Attribute type') ?>
 
-    <br><br><br><br><br>
-<!--    --><?//= $form->field($model, 'category_id')
-//        ->dropDownList($categories, ['prompt' => ''])->label('Subcategory');?>
-<!---->
-<!--    --><?//= $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
-<!---->
-<!--    --><?//= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-<!---->
-<!--    --><?//= $form->field($model, 'unit')->textInput(['maxlength' => true]) ?>
-<!---->
-<!--    --><?//= $form->field($model, 'weight')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'unit')->textInput(['maxlength' => true])->label('Attribute unit') ?>
+
+    <?= $form->field($model, 'weight')->textInput(['maxlength' => true])->label('Attribute weight') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

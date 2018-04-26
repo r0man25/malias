@@ -10,6 +10,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ManageController implements the CRUD actions for Attr model.
@@ -68,7 +69,14 @@ class ManageController extends Controller
     {
         $model = new AttrForm();
 
-        $categories = Category::getMainCategoriesAsArray();
+        $parentCategories = Category::getParentCategoriesAsArray();
+
+
+//        if ($model->load(Yii::$app->request->post())){
+//            echo "<pre>";
+//            var_dump($model);
+//            echo "</pre>";die;
+//        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,31 +84,8 @@ class ManageController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'categories' => $categories,
+            'parentCategories' => $parentCategories,
         ]);
-    }
-
-    public function actionLike()
-    {
-        echo "<pre>";
-        print_r("Hello");
-        echo "</pre>";die;
-//        if (Yii::$app->user->isGuest) {
-//            return $this->redirect(['/user/default/login']);
-//        }
-//
-//        Yii::$app->response->format = Response::FORMAT_JSON;
-//
-//        $id = Yii::$app->request->post('id');
-//        $post = $this->findPost($id);
-//        $currentUser = Yii::$app->user->identity;
-//
-//        $post->like($currentUser);
-//
-//        return [
-//            'success' => true,
-//            'likesCount' => $post->countLikes(),
-//        ];
     }
 
     /**
@@ -112,7 +97,15 @@ class ManageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $attr = $this->findModel($id);
+
+        echo "<pre>";
+        print_r($attr->getMainCategory());
+        echo "</pre>";die;
+
+        $model = new AttrForm();
+
+        $parentCategories = Category::getParentCategoriesAsArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -120,7 +113,69 @@ class ManageController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'parentCategories' => $parentCategories,
         ]);
+    }
+
+    public function actionGetSubcategory()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $isChecked = Yii::$app->request->post('isChecked');
+        $id = Yii::$app->request->post('id');
+
+        $subCategory = Category::getSubcategoriesByCategoryId($id);
+        $parentAttrs = Attr::getMainAttrByCategoryId(array_flip ($subCategory));
+
+        if ($isChecked === "true" && $subCategory) {
+            return [
+                'success' => true,
+                'isChecked' => true,
+                'subcategories' => $subCategory,
+            ];
+        }
+
+        if ($isChecked === "false" && $subCategory) {
+            return [
+                'success' => true,
+                'isChecked' => false,
+                'subcategories' => $subCategory,
+                'parentAttrs' => $parentAttrs,
+            ];
+        }
+
+        return [
+            'success' => false,
+        ];
+    }
+
+    public function actionGetMainAttr()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $isChecked = Yii::$app->request->post('isChecked');
+        $id = Yii::$app->request->post('id');
+        $parentAttrs = Attr::getMainAttrByCategoryId($id);
+
+        if ($isChecked === "true" && $parentAttrs) {
+            return [
+                'success' => true,
+                'isChecked' => true,
+                'parentAttrs' => $parentAttrs,
+            ];
+        }
+
+        if ($isChecked === "false" && $parentAttrs) {
+            return [
+                'success' => true,
+                'isChecked' => false,
+                'parentAttrs' => $parentAttrs,
+            ];
+        }
+
+        return [
+            'success' => false,
+        ];
     }
 
     /**

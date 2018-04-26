@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Attr */
 
-$this->title = 'Create Attr';
-$this->params['breadcrumbs'][] = ['label' => 'Attrs', 'url' => ['index']];
+$this->title = 'Create Attribute';
+$this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="attr-create">
@@ -16,7 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'categories' => $categories,
+        'parentCategories' => $parentCategories,
     ]) ?>
+
+    <?php
+        $this->registerJsFile('@web/js/subcategories.js', [
+            'depends' => \yii\web\JqueryAsset::className(),
+        ]);
+    ?>
 
 </div>

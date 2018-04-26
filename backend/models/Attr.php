@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * This is the model class for table "attr".
@@ -36,8 +38,53 @@ class Attr extends \yii\db\ActiveRecord
             'title' => 'Title',
             'type' => 'Type',
             'unit' => 'Unit',
+            'category_id' => 'Category ID',
         ];
     }
+
+
+    public static function getMainAttrByCategoryId($id)
+    {
+        $attr = CategoryAttr::find()
+            ->innerJoin('attr', 'attr.id = category_attr.attr_id')
+            ->innerJoin('category', 'category.id = category_attr.category_id')
+            ->where(
+                [
+                    'category_attr.parent_id' => NULL,
+                    'category_attr.category_id' => $id
+                ]
+            )
+            ->with(['attr', 'category'])
+            ->all();
+
+//        return $attr;
+
+        $result = [];
+        foreach ($attr as $item) {
+            $result[] = [
+                'id' => $item->id,
+                'title' => $item->category->title . '/' . $item->attr->title,
+            ];
+        }
+
+        return ArrayHelper::map($result, 'id', 'title');
+    }
+
+
+    public function getMainCategory()
+    {
+        return $this->subCategory->parent;
+    }
+
+
+    public function getSubCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category_id'])
+            ->viaTable('category_attr', ['attr_id' => 'id']);
+    }
+
+
+
 
     /**
      * @return \yii\db\ActiveQuery

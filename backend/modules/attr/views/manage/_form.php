@@ -8,18 +8,15 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Attr */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $parentCategories backend\models\Category getParentCategoriesAsArray */
 ?>
 
 <div class="attr-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-<!--    --><?//= $form->field($model, 'mainCategory')
-//        ->checkboxList($parentCategories)
-//        ->label('Main category');?>
-
     <?= $form->field($model, 'mainCategory')
-        ->checkboxList([5 => 'qwe', 15=> 'xzc'])
+        ->checkboxList($parentCategories)
         ->label('Main category');?>
 
     <?= $form->field($model, 'category_id')

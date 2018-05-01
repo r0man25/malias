@@ -78,8 +78,8 @@ class ManageController extends Controller
 //            echo "</pre>";die;
 //        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $attrId = $model->save()) {
+            return $this->redirect(['view', 'id' => $attrId]);
         }
 
         return $this->render('create', [
@@ -98,19 +98,14 @@ class ManageController extends Controller
     public function actionUpdate($id)
     {
         $attr = $this->findModel($id);
-
         echo "<pre>";
         print_r($attr->getMainCategory());
         echo "</pre>";die;
-
         $model = new AttrForm();
-
         $parentCategories = Category::getParentCategoriesAsArray();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
             'parentCategories' => $parentCategories,

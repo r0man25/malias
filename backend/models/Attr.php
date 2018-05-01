@@ -57,16 +57,13 @@ class Attr extends \yii\db\ActiveRecord
             ->with(['attr', 'category'])
             ->all();
 
-//        return $attr;
-
         $result = [];
         foreach ($attr as $item) {
             $result[] = [
-                'id' => $item->id,
+                'id' => $item->category->id . '/' . $item->id,
                 'title' => $item->category->title . '/' . $item->attr->title,
             ];
         }
-
         return ArrayHelper::map($result, 'id', 'title');
     }
 

@@ -78,7 +78,7 @@ $(document).ready(function () {
                 for (key in data.parentAttrs) {
                     $("#attrform-parent_id").append($('' +
                         '<label>' +
-                        '<input type="checkbox" name="AttrForm[parent_id][]" value="' + key + '">' + '&nbsp;' + data.parentAttrs[key] + '&nbsp;' +
+                        '<input type="checkbox" name="AttrForm[parent_id][]" value="'+key+'">' + '&nbsp;' + data.parentAttrs[key] + '&nbsp;' +
                         '</label>'
                     ));
                 }

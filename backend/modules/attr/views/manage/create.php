@@ -5,6 +5,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Attr */
+/* @var $parentCategories backend\models\Category getParentCategoriesAsArray */
 
 $this->title = 'Create Attribute';
 $this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];

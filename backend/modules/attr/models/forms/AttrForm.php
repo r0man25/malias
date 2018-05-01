@@ -2,10 +2,13 @@
 
 namespace backend\modules\attr\models\forms;
 
+use function Symfony\Component\Debug\Tests\testHeader;
 use Yii;
 use backend\models\Attr;
 use backend\models\CategoryAttr;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
+
 /**
  * Created by PhpStorm.
  * User: us10140
@@ -25,11 +28,9 @@ class AttrForm extends Model
     public function rules()
     {
         return [
-            [['mainCategory'], 'required'],
-            [['mainCategory'], 'each', 'rule' => ['integer']],
-//            [['category_id'], 'required'],
-            [['category_id'], 'integer'],
-            [['parent_id'], 'integer'],
+            [['mainCategory','category_id'], 'required'],
+            [['mainCategory','category_id'], 'each', 'rule' => ['integer']],
+            [['parent_id'], 'each', 'rule' => ['match', 'pattern' => '/^[0-9]+\/[0-9]+$/']],
             [['title'], 'required'],
             [['title'], 'string', 'min' => 2],
             [['type'], 'required'],
@@ -40,56 +41,67 @@ class AttrForm extends Model
     }
 
 
-
-    public function toInt(&$arr)
-    {
-        foreach ($arr as &$item)
-        {
-            $item = (int) $item;
-        }
-    }
-
-
     public function save()
     {
-
-//        $this->toInt($this->mainCategory);
-
         
         if ($this->validate()) {
-            echo "<pre>";
-            var_dump($this);
-            echo "</pre>";die;
-            $transaction = Yii::$app->db->beginTransaction();
 
-            $attr = new Attr();
-            $categoryAttr = new CategoryAttr();
+            $parentAttr = [];
+            $this->category_id = ArrayHelper::index($this->category_id, function ($element) {
+                return $element;
+            });
 
-            echo "<pre>";
-            print_r($this);
-            echo "</pre>";die;
+            if ($this->parent_id) {
+                foreach ($this->parent_id as $item) {
+                    $parentAttr[substr($item, 0, stripos($item, '/'))][] =
+                        substr($item, stripos($item, '/') + 1, strlen($item));
+                }
+            }
 
-            $attr->title = $this->title;
-            $attr->type = $this->type;
-            $attr->unit = $this->unit;
-
-            $attr->save();
-
-//            $categoryAttr->category_id = $this->category_id;
-//            $categoryAttr->attr_id = $attr->id;
-//            $categoryAttr->weight = $this->weight;
-//            $categoryAttr->parent_id = $this->parent_id;
-
-            if ($categoryAttr->save()) {
-                $transaction->commit();
+            foreach ($parentAttr as $key => $value) {
+                ArrayHelper::setValue($this->category_id, $key, $value);
             }
 
 
+//            echo "<pre>";
+//            print_r($this);
+//            echo "<pre>";die;
+//            $transaction = Yii::$app->db->beginTransaction();
 
+            $attr = new Attr();
+            $attr->title = $this->title;
+            $attr->type = $this->type;
+            $attr->unit = $this->unit;
+            $attr->save();
 
+            foreach ($this->category_id as $key => $category) {
+                
+                if (is_array($category)) {
+                    foreach ($category as $item) {
+                        $categoryAttr = new CategoryAttr();
+                        $categoryAttr->category_id = $key;
+                        $categoryAttr->attr_id = $attr->id;
+                        $categoryAttr->weight = $this->weight;
+                        $categoryAttr->parent_id = $item;
+                        $categoryAttr->save();
+                    }
+                } else {
+                    $categoryAttr = new CategoryAttr();
+                    $categoryAttr->category_id = $key;
+                    $categoryAttr->attr_id = $attr->id;
+                    $categoryAttr->weight = $this->weight;
+                    $categoryAttr->save();
+                }
 
+                
+            }
 
-            $transaction->rollBack();
+            return $attr->id;
+
+//            if ($categoryAttr->save()) {
+//                $transaction->commit();
+//            }
+//            $transaction->rollBack();
         }
     }
 

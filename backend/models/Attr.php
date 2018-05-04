@@ -60,11 +60,16 @@ class Attr extends \yii\db\ActiveRecord
         $result = [];
         foreach ($attr as $item) {
             $result[] = [
-                'id' => $item->category->id . '/' . $item->id,
-                'title' => $item->category->title . '/' . $item->attr->title,
+//                'id' => $item->category->id . '/' . $item->id,
+//                'title' => $item->category->title . '/' . $item->attr->title,
+                'category_id' => $item->category->id,
+                'category_title' => $item->category->title,
+                'attr_id' => $item->category->id . '/' . $item->id,
+                'attr_title' => $item->attr->title,
             ];
         }
-        return ArrayHelper::map($result, 'id', 'title');
+        return $result;
+//        return ArrayHelper::map($result, 'id', 'title');
     }
 
 

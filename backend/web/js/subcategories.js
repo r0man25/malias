@@ -19,8 +19,12 @@ $(document).ready(function () {
         $.post('/attr/manage/get-subcategory', params, function (data) {
 
             if (data.success && data.isChecked) {
+                $("#attrform-category_id").append( $('<fieldset id="categoriesSection'+data.mainCategory['id']+'" class="fieldset">' +
+                        '<legend class="fieldset-legend">'+data.mainCategory['title']+'</legend>' +
+                    '</fieldset>'));
                 for (key in data.subcategories){
-                    $("#attrform-category_id").append( $('' +
+                    var elem = "#categoriesSection"+data.mainCategory['id'];
+                    $(elem).append( $('' +
                         '<label>' +
                             '<input type="checkbox" name="AttrForm[category_id][]" value="'+key+'">'+'&nbsp;'+data.subcategories[key]+'&nbsp;' +
                         '</label>'
@@ -29,20 +33,26 @@ $(document).ready(function () {
             }
 
             if (data.success && !data.isChecked) {
-                $('#attrform-category_id label input').each(function () {
-                    for (key in data.subcategories){
-                        if ($(this).val() == key) {
-                            $(this).parent().remove();
-                        }
-                    }
-                })
-                $('#attrform-parent_id label input').each(function () {
-                    for (keyy in data.parentAttrs) {
-                        if ($(this).val() == keyy) {
-                            $(this).parent().remove();
-                        }
-                    }
-                })
+                var categoryElem = "#categoriesSection"+data.mainCategory['id'];
+                $(categoryElem).remove();
+                // $('#attrform-category_id label input').each(function () {
+                //     for (key in data.subcategories){
+                //         if ($(this).val() == key) {
+                //             $(this).parent().remove();
+                //         }
+                //     }
+                // })
+                for (key in data.parentAttrs) {
+                    var attrElem = "#parentsSection" + data.parentAttrs[key]['category_id'];
+                    $(attrElem).remove();
+                }
+                // $('#attrform-parent_id label input').each(function () {
+                //     for (keyy in data.parentAttrs) {
+                //         if ($(this).val() == keyy) {
+                //             $(this).parent().remove();
+                //         }
+                //     }
+                // })
             }
 
             if ($('#attrform-category_id label input').length > 0 && !$('*').is('#SubcategoryLabel')) {
@@ -75,23 +85,29 @@ $(document).ready(function () {
 
         $.post('/attr/manage/get-main-attr', params, function (data) {
             if (data.success && data.isChecked) {
+                $("#attrform-parent_id").append( $('<fieldset id="parentsSection'+data.parentAttrs[0]['category_id']+'" class="fieldset">' +
+                    '<legend class="fieldset-legend">'+data.parentAttrs[0]['category_title']+'</legend>' +
+                    '</fieldset>'));
                 for (key in data.parentAttrs) {
-                    $("#attrform-parent_id").append($('' +
+                    var elem = "#parentsSection"+data.parentAttrs[0]['category_id'];
+                    $(elem).append($('' +
                         '<label>' +
-                        '<input type="checkbox" name="AttrForm[parent_id][]" value="'+key+'">' + '&nbsp;' + data.parentAttrs[key] + '&nbsp;' +
+                        '<input type="checkbox" name="AttrForm[parent_id][]" value="'+data.parentAttrs[key]['attr_id']+'">' + '&nbsp;' + data.parentAttrs[key]['attr_title'] + '&nbsp;' +
                         '</label>'
                     ));
                 }
             }
 
             if (data.success && !data.isChecked) {
-                $('#attrform-parent_id label input').each(function () {
-                    for (key in data.parentAttrs) {
-                        if ($(this).val() == key) {
-                            $(this).parent().remove();
-                        }
-                    }
-                })
+                var elem = "#parentsSection"+data.parentAttrs[0]['category_id'];
+                $(elem).remove();
+                // $('#attrform-parent_id label input').each(function () {
+                //     for (key in data.parentAttrs) {
+                //         if ($(this).val() == key) {
+                //             $(this).parent().remove();
+                //         }
+                //     }
+                // })
             }
 
             if ($('#attrform-parent_id label input').length > 0 && !$('*').is('#MainAttrLabel')) {

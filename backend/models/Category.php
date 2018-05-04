@@ -19,6 +19,17 @@ use yii\helpers\ArrayHelper;
  */
 class Category extends \yii\db\ActiveRecord
 {
+
+    public function rules()
+    {
+        return [
+            [['title'], 'required'],
+            [['title'], 'string', 'min' => 2],
+            [['parent_id'], 'integer'],
+        ];
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -50,12 +61,13 @@ class Category extends \yii\db\ActiveRecord
     {
         $mainCategory = self::getCategoryById($id);
         $subCategories = self::find()->where(['parent_id' => $id])->asArray()->all();
-        $result = ArrayHelper::map($subCategories, 'id', 'title');
-        foreach ($result as $key => $value) {
-            $result[$key] = $mainCategory['title'].'/'.$value;
-        }
+        return ArrayHelper::map($subCategories, 'id', 'title');
+//        $result = ArrayHelper::map($subCategories, 'id', 'title');
+//        foreach ($result as $key => $value) {
+//            $result[$key] = $mainCategory['title'].'/'.$value;
+//        }
 
-        return $result;
+//        return $result;
     }
 
 

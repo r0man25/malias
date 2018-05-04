@@ -118,3 +118,25 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+.fieldset-legend {
+    width: auto;
+    background: rgb(245,245,245) linear-gradient(#f4f4f4, #f1f1f1); /* Цвет фона */
+    padding: 5px 10px; /* Поля */
+    margin-left: 20px; /* Отступ слева */
+    border-radius: 5px; /* Радиус скругления */
+    font-family: arial,sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(68,68,68);
+}
+
+.fieldset {
+    border: 1px solid #333; /* Параметры рамки */
+    border-radius: 5px; /* Радиус скругления */
+    padding: 0 10px 10px 10px;
+    margin-top: 10px; /* Отступ слева */
+    margin-right: 10px; /* Отступ слева */
+    display: inline;
+}

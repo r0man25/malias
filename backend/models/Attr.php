@@ -73,18 +73,66 @@ class Attr extends \yii\db\ActiveRecord
     }
 
 
+    public function getMainCategoryIds()
+    {
+        $subCategories = $this->subCategory;
+        $mainCategories = [];
+        foreach ($subCategories as $subCategory) {
+            $mainCategories[] = $subCategory->parent;
+        }
+        return ArrayHelper::map($mainCategories, 'id', 'id');
+    }
+
     public function getMainCategory()
     {
-        return $this->subCategory->parent;
+        $subCategories = $this->subCategory;
+        $mainCategories = [];
+        foreach ($subCategories as $subCategory) {
+            $mainCategories[] = $subCategory->parent;
+        }
+        return ArrayHelper::map($mainCategories, 'id', 'title');
+    }
+
+    public function getSubCategoryIds()
+    {
+        return ArrayHelper::map($this->subCategory, 'id', 'id');
+    }
+
+    public function getSubCategories()
+    {
+        return ArrayHelper::map($this->subCategory, 'id', 'title');
+    }
+
+    public function getMainAttrIds()
+    {
+        return ArrayHelper::getColumn($this->getCategoryAttrs()->asArray()->all(), 'parent_id');
+    }
+
+    public function getMainAttr()
+    {
+        $attrs = $this->categoryAttrs;
+        $mainAttrs = [];
+
+        foreach ($attrs as $mainAttr) {
+            $mainAttrs[] = $mainAttr->parent->attr['title'];
+        }
+
+        return $mainAttrs;
     }
 
 
     public function getSubCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id'])
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
             ->viaTable('category_attr', ['attr_id' => 'id']);
+//            ->viaTable('');
     }
 
+
+    public function getAttrWeight()
+    {
+        return ($this->categoryAttrs[0]->weight) ? $this->categoryAttrs[0]->weight : "";
+    }
 
 
 

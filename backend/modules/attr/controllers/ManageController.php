@@ -55,8 +55,13 @@ class ManageController extends Controller
      */
     public function actionView($id)
     {
+        $attr = $this->findModel($id);
+
+        $model = new AttrForm();
+        $model->loadAttrData($attr);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -91,17 +96,18 @@ class ManageController extends Controller
     public function actionUpdate($id)
     {
         $attr = $this->findModel($id);
-        echo "<pre>";
-        print_r($attr->getMainCategory());
-        echo "</pre>";die;
+
         $model = new AttrForm();
+        $model->loadAttrData($attr);
         $parentCategories = Category::getParentCategoriesAsArray();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+        if ($model->load(Yii::$app->request->post()) && $attrId = $model->update($id)) {
+            return $this->redirect(['view', 'id' => $attrId]);
         }
         return $this->render('update', [
             'model' => $model,
             'parentCategories' => $parentCategories,
+            'attrId' => $id,
         ]);
     }
 
@@ -111,10 +117,17 @@ class ManageController extends Controller
 
         $isChecked = Yii::$app->request->post('isChecked');
         $id = Yii::$app->request->post('id');
+        $attrId = Yii::$app->request->post('attrId');
 
         $mainCategory = Category::getCategoryById($id);
         $subCategory = Category::getSubcategoriesByCategoryId($id);
         $parentAttrs = Attr::getMainAttrByCategoryId(array_flip ($subCategory));
+        if (isset($attrId)){
+            $attr = $this->findModel($attrId);
+            $attrSubCategories = $attr->getSubCategoryIds();
+        } else {
+            $attrSubCategories = "";
+        }
 
         if ($isChecked === "true" && $subCategory) {
             return [
@@ -122,6 +135,7 @@ class ManageController extends Controller
                 'isChecked' => true,
                 'mainCategory' => $mainCategory,
                 'subcategories' => $subCategory,
+                'attrSubCategories' => $attrSubCategories,
             ];
         }
 
@@ -147,12 +161,21 @@ class ManageController extends Controller
         $isChecked = Yii::$app->request->post('isChecked');
         $id = Yii::$app->request->post('id');
         $parentAttrs = Attr::getMainAttrByCategoryId($id);
+        $attrId = Yii::$app->request->post('attrId');
+
+        if (isset($attrId)){
+            $attr = $this->findModel($attrId);
+            $mainAttrs = $attr->getMainAttrIds();
+        } else {
+            $mainAttrs = "";
+        }
 
         if ($isChecked === "true" && $parentAttrs) {
             return [
                 'success' => true,
                 'isChecked' => true,
                 'parentAttrs' => $parentAttrs,
+                'mainAttrs' => $mainAttrs,
             ];
         }
 

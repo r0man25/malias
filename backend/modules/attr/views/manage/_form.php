@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'mainCategory')
-        ->checkboxList($parentCategories)
+        ->checkboxList($parentCategories, ['data-id' => (isset($attrId)) ? $attrId : ''])
         ->label('Main category');?>
 
     <?= $form->field($model, 'category_id')

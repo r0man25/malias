@@ -57,6 +57,12 @@ class Category extends \yii\db\ActiveRecord
         return ArrayHelper::map($parentCategory, 'id', 'title');
     }
 
+    public static function getSubCategoriesAsArray()
+    {
+        $subCategory = self::find()->where('parent_id IS NOT NULL')->asArray()->all();
+        return ArrayHelper::map($subCategory, 'id', 'title');
+    }
+
     public static function getSubcategoriesByCategoryId($id)
     {
         $mainCategory = self::getCategoryById($id);

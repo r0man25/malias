@@ -20,6 +20,12 @@ class AttrForm extends Model
     public $type;
     public $unit;
     public $weight;
+    public $attrId;
+    public $mainCategoryTitle;
+    public $subCategoryTitle;
+    public $mainAttrsTitle;
+
+
     public function rules()
     {
         return [
@@ -34,6 +40,8 @@ class AttrForm extends Model
             [['weight'], 'integer'],
         ];
     }
+
+
     public function save()
     {
 
@@ -88,10 +96,76 @@ class AttrForm extends Model
 //            $transaction->rollBack();
         }
     }
-    public function loadAttr(Attr $attr)
+
+
+
+    public function update($id)
     {
-        $this->mainCategory = $attr->getMainCategory();
-        $this->category_id = $attr->subCategory;
-        $this->parent_id = $attr->subCategory;
+
+        if ($this->validate()) {
+            $parentAttr = [];
+            $this->category_id = ArrayHelper::index($this->category_id, function ($element) {
+                return $element;
+            });
+            if ($this->parent_id) {
+                foreach ($this->parent_id as $item) {
+                    $parentAttr[substr($item, 0, stripos($item, '/'))][] =
+                        substr($item, stripos($item, '/') + 1, strlen($item));
+                }
+            }
+
+            foreach ($parentAttr as $key => $value) {
+                ArrayHelper::setValue($this->category_id, $key, $value);
+            }
+//            echo "<pre>";
+//            print_r($this);
+//            echo "<pre>";die;
+//            $transaction = Yii::$app->db->beginTransaction();
+//            $attr = new Attr();
+            $attr = Attr::findOne($id);
+            $attr->title = $this->title;
+            $attr->type = $this->type;
+            $attr->unit = $this->unit;
+            $attr->save();
+
+            CategoryAttr::deleteAll("attr_id = $id");
+
+            foreach ($this->category_id as $key => $category) {
+                if (is_array($category)) {
+                    foreach ($category as $item) {
+                        $categoryAttr = new CategoryAttr();
+                        $categoryAttr->category_id = $key;
+                        $categoryAttr->attr_id = $attr->id;
+                        $categoryAttr->weight = $this->weight;
+                        $categoryAttr->parent_id = $item;
+                        $categoryAttr->save();
+                    }
+                } else {
+                    $categoryAttr = new CategoryAttr();
+                    $categoryAttr->category_id = $key;
+                    $categoryAttr->attr_id = $attr->id;
+                    $categoryAttr->weight = $this->weight;
+                    $categoryAttr->save();
+                }
+            }
+            return $attr->id;
+        }
+    }
+
+
+
+    public function loadAttrData(Attr $attr)
+    {
+        $this->mainCategory = $attr->getMainCategoryIds();
+        $this->title = $attr->title;
+        $this->type = $attr->type;
+        $this->unit = $attr->unit;
+        $this->weight = $attr->getAttrWeight();
+        $this->attrId = $attr->id;
+        $this->mainCategoryTitle = $attr->getMainCategory();
+        $this->subCategoryTitle = $attr->getSubCategories();
+        $this->mainAttrsTitle = $attr->getMainAttr();
+
+        return $attr->id;
     }
 }

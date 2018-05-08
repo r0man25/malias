@@ -18,6 +18,9 @@ return [
         'attr' => [
             'class' => 'backend\modules\attr\Module',
         ],
+        'product' => [
+            'class' => 'backend\modules\product\Module',
+        ],
     ],
     'components' => [
         'request' => [
@@ -55,11 +58,14 @@ return [
                 'category/update/<id:\d+>' => 'category/manage/update',
                 'category/<id:\d+>' => 'category/manage/view',
                 'attribute' => 'attr/manage/index',
-//                'attribute/main-category' => 'attr/manage/main-categories',
-//                'attribute/subcategory' => 'attr/manage/subcategories',
                 'attribute/create' => 'attr/manage/create',
                 'attribute/update/<id:\d+>' => 'attr/manage/update',
                 'attribute/<id:\d+>' => 'attr/manage/view',
+                'attribute/default-values' => 'attr/attr-default-values/index',
+                'attribute/default-values/<id:\d+>' => 'attr/attr-default-values/view',
+                'attribute/default-values/create' => 'attr/attr-default-values/create',
+                'attribute/default-values/update/<id:\d+>' => 'attr/attr-default-values/update',
+                'attribute/default-values/attribute/<id:\d+>' => 'attr/attr-default-values/attr-default-values-view',
             ],
         ],
     ],

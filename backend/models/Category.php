@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use phpDocumentor\Reflection\Types\Null_;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -63,9 +64,13 @@ class Category extends \yii\db\ActiveRecord
         return ArrayHelper::map($subCategory, 'id', 'title');
     }
 
+    public static function getFirstMainCategoryId()
+    {
+        return self::find()->where(['parent_id' => NULL])->min('id');
+    }
+
     public static function getSubcategoriesByCategoryId($id)
     {
-        $mainCategory = self::getCategoryById($id);
         $subCategories = self::find()->where(['parent_id' => $id])->asArray()->all();
         return ArrayHelper::map($subCategories, 'id', 'title');
 //        $result = ArrayHelper::map($subCategories, 'id', 'title');

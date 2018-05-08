@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model backend\models\Attr */
 
 $this->title = 'Update Attribute: '.$model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Attrs', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $attrId]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = 'Update';
     ]) ?>
 
     <?php
-        $this->registerJsFile('@web/js/subcategories.js', [
+        $this->registerJsFile('@web/js/attr.js', [
             'depends' => \yii\web\JqueryAsset::className(),
         ]);
     ?>

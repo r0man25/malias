@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "category_attr".
@@ -54,6 +55,16 @@ class CategoryAttr extends \yii\db\ActiveRecord
             'weight' => 'Weight',
             'parent_id' => 'Parent ID',
         ];
+    }
+
+    public static function getAttrsByCategoryId($id)
+    {
+        $attr = self::find()->where(['category_id' => $id])->andWhere('parent_id IS NOT NULL')->all();
+        $result = [];
+        foreach ($attr as $item) {
+            $result[] = $item->attr;
+        }
+        return ArrayHelper::map($result,'id','title');
     }
 
     /**

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\Attr */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Attrs', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="attr-view">

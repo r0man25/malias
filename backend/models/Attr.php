@@ -114,10 +114,17 @@ class Attr extends \yii\db\ActiveRecord
         $mainAttrs = [];
 
         foreach ($attrs as $mainAttr) {
-            $mainAttrs[] = $mainAttr->parent->attr['title'];
+            if ($mainAttr->parent && !in_array($mainAttr->parent->attr['title'],$mainAttrs)) {
+                $mainAttrs[] = $mainAttr->parent->attr['title'];
+            }
         }
 
         return $mainAttrs;
+    }
+
+    public static function getAttrs()
+    {
+        return ArrayHelper::map(self::find()->asArray()->all(),'id','title');
     }
 
 

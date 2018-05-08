@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <?php
-        $this->registerJsFile('@web/js/subcategories.js', [
+        $this->registerJsFile('@web/js/attr.js', [
             'depends' => \yii\web\JqueryAsset::className(),
         ]);
     ?>

@@ -64,7 +64,7 @@ $(document).ready(function () {
     setTimeout(function(){
 
         $('#attrform-category_id fieldset label input:checked').each(function () {
-            console.log($(this));
+            // console.log($(this));
 
             var params = {
                 'isChecked': true,
@@ -232,6 +232,22 @@ $(document).ready(function () {
 
             return false;
         });
+    });
+
+    $(document).on("click", "#attrform-parent_id fieldset label input", function () {
+        var fieldset = $(this).parent().parent();
+        var that = $(this);
+        if (that.is(':checked')) {
+            fieldset.find('input').each(function () {
+                if (!$(this).is(that)) {
+                    $(this).attr('disabled', 'disabled');
+                }
+            });
+        } else {
+            fieldset.find('input').each(function () {
+                $(this).attr('disabled', false);
+            });
+        }
     });
 
 });

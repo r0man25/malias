@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\models\Attr;
 
 
 /* @var $this yii\web\View */
@@ -19,9 +20,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'mainCategory')
-            ->dropDownList([])->label('Main category')?>
+        <?php foreach ($productAttrs as $prop) : ?>
 
+            <?php if ($attrVal = Attr::getAttrsDefaultValByAttrId($prop->attr_id)) : ?>
+                <?= $form->field($model, "propDefaultVals[$prop->id]")
+                    ->dropDownList($attrVal)->label($prop->attr->title)?>
+            <?php else: ?>
+                <?= $form->field($model, "prop[$prop->id]")->textInput(['maxlength' => true])
+                    ->label($prop->attr->title)?>
+            <?php endif; ?>
+
+        <?php endforeach; ?>
         <div class="form-group">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
         </div>

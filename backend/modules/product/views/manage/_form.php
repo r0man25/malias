@@ -13,13 +13,18 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'mainCategory')
-        ->dropDownList($parentCategories)->label('Main category')?>
+        ->dropDownList($parentCategories,
+            ['data-id' => (isset($model->product_id)) ? $model->product_id : ''])
+        ->label('Main category')?>
 
     <?= $form->field($model, 'category_id')
-        ->dropDownList($subCategory, ['prompt' => ''])->label('Subcategory')?>
+        ->dropDownList($subCategory, ['prompt' => '',])->label('Subcategory')?>
 
     <?= $form->field($model, 'parent_id')
         ->dropDownList($parentProduct, ['prompt' => ''])->label('Parent product')?>
+
+    <?= $form->field($model, 'brand_id')
+        ->dropDownList($brands, ['prompt' => ''])->label('Brand')?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true])->label('Title')?>
 

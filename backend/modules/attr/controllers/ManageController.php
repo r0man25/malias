@@ -160,13 +160,16 @@ class ManageController extends Controller
 
         $isChecked = Yii::$app->request->post('isChecked');
         $id = Yii::$app->request->post('id');
-        $parentAttrs = Attr::getMainAttrByCategoryId($id);
         $attrId = Yii::$app->request->post('attrId');
+//        $parentAttrs = Attr::getMainAttrByCategoryId($id);
+//        $parentAttrs = Attr::getMainAttrByCategoryIdWithOutAttrId($id, 5);
 
         if (isset($attrId)){
+            $parentAttrs = Attr::getMainAttrByCategoryIdWithOutAttrId($id, $attrId);
             $attr = $this->findModel($attrId);
             $mainAttrs = $attr->getMainAttrIds();
         } else {
+            $parentAttrs = Attr::getMainAttrByCategoryId($id);
             $mainAttrs = "";
         }
 

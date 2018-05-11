@@ -73,6 +73,34 @@ class Attr extends \yii\db\ActiveRecord
     }
 
 
+    public static function getMainAttrByCategoryIdWithOutAttrId($id, $attrId = null)
+    {
+        $attr = CategoryAttr::find()
+            ->innerJoin('attr', 'attr.id = category_attr.attr_id')
+            ->innerJoin('category', 'category.id = category_attr.category_id')
+            ->where(
+                [
+                    'category_attr.parent_id' => NULL,
+                    'category_attr.category_id' => $id,
+                ]
+            )
+            ->andWhere("category_attr.attr_id <> $attrId")
+            ->with(['attr', 'category'])
+            ->all();
+
+        $result = [];
+        foreach ($attr as $item) {
+            $result[] = [
+                'category_id' => $item->category->id,
+                'category_title' => $item->category->title,
+                'attr_id' => $item->category->id . '/' . $item->id,
+                'attr_title' => $item->attr->title,
+            ];
+        }
+        return $result;
+    }
+
+
     public function getMainCategoryIds()
     {
         $subCategories = $this->subCategory;
@@ -141,7 +169,11 @@ class Attr extends \yii\db\ActiveRecord
         return ($this->categoryAttrs[0]->weight) ? $this->categoryAttrs[0]->weight : "";
     }
 
-
+    public static function getAttrsDefaultValByAttrId($id)
+    {
+        $attrVal = AttrVal::find()->where(['attr_id' => $id])->asArray()->all();
+        return ArrayHelper::map($attrVal, 'id', 'val');
+    }
 
     /**
      * @return \yii\db\ActiveQuery

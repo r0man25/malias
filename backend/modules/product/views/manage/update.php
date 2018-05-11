@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Update Product: {nameAttribute}';
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->product_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="product-update">
@@ -16,6 +16,16 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'parentCategories' => $parentCategories,
+        'subCategory' => $subCategory,
+        'parentProduct' => $parentProduct,
+        'brands' => $brands,
     ]) ?>
 
 </div>
+
+<?php
+$this->registerJsFile('@web/js/product.js', [
+    'depends' => \yii\web\JqueryAsset::className(),
+]);
+?>

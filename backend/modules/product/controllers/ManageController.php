@@ -2,6 +2,8 @@
 
 namespace backend\modules\product\controllers;
 
+use backend\models\Attr;
+use backend\models\Brand;
 use backend\models\CategoryAttr;
 use backend\modules\product\models\forms\ProductForm;
 use backend\modules\product\models\forms\ProductPropertiesForm;
@@ -74,10 +76,8 @@ class ManageController extends Controller
 
         $firstMainCategoryId = Category::getFirstMainCategoryId();
         $subCategory = Category::getSubcategoriesByCategoryId($firstMainCategoryId);
-
         $parentProduct = Product::getParentProductsAsArray();
-
-        $categoryAttrs = CategoryAttr::getAttrsByCategoryId(7);
+        $brands = Brand::getAllBrands();
 
 //        if ($model->load(Yii::$app->request->post())){
 //            echo "<pre>";
@@ -94,18 +94,24 @@ class ManageController extends Controller
             'parentCategories' => $parentCategories,
             'subCategory' => $subCategory,
             'parentProduct' => $parentProduct,
+            'brands' => $brands,
         ]);
     }
 
-    public function actionSetProductProperties()
+    public function actionSetProductProperties($id)
     {
-        $model = new ProductPropertiesForm([]);
-        echo "<pre>";
-        print_r($model);
-        echo "</pre>";die;
+        $model = new ProductPropertiesForm();
+
+        $product = $this->findModel($id);
+        $productAttrs = $product->getAttrs();
+
+        if ($model->load(Yii::$app->request->post()) && $productId = $model->save()) {
+            return $this->redirect(['view', 'id' => $productId]);
+        }
 
         return $this->render('set-product-properties', [
             'model' => $model,
+            'productAttrs' => $productAttrs,
         ]);
     }
 
@@ -115,8 +121,21 @@ class ManageController extends Controller
 
         $mainCategoryId = Yii::$app->request->post('mainCategoryId');
         $subCategoryId = Yii::$app->request->post('subCategoryId');
+        $productId = Yii::$app->request->post('productId');
 
         $subCategory = Category::getSubcategoriesByCategoryId($mainCategoryId);
+
+        if (isset($productId) && isset($subCategoryId)) {
+            $product = $this->findModel($productId);
+            $productAttrs = $product->getAttrsAsArray();
+            $categoryAttrs = CategoryAttr::getAttrsByCategoryId($subCategoryId);
+            return [
+                'success' => true,
+                'productAttrs' => $productAttrs,
+                'categoryAttrs' => $categoryAttrs,
+            ];
+        }
+
         if (isset($subCategoryId)) {
             $categoryAttrs = CategoryAttr::getAttrsByCategoryId($subCategoryId);
             return [
@@ -124,8 +143,6 @@ class ManageController extends Controller
                 'categoryAttrs' => $categoryAttrs,
             ];
         }
-
-
 
         if ($subCategory) {
             return [
@@ -148,14 +165,31 @@ class ManageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $product = $this->findModel($id);
+        $parentCategories = Category::getParentCategoriesAsArray();
+        $subCategory = Category::getSubcategoriesByCategoryId($product->category->parent_id);
+        $parentProduct = Product::getParentProductsAsArray();
+        $brands = Brand::getAllBrands();
+        
+//        echo "<pre>";
+//        print_r($product->getAttrsAsArray());
+//        echo "</pre>";die;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = new ProductForm();
+        $model->loadProductData($product);
+
+
+
+        if ($model->load(Yii::$app->request->post()) && $productId = $model->update($model->product_id)) {
+            return $this->redirect(['view', 'id' => $productId]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'parentCategories' => $parentCategories,
+            'subCategory' => $subCategory,
+            'parentProduct' => $parentProduct,
+            'brands' => $brands,
         ]);
     }
 

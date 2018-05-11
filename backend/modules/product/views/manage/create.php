@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'parentCategories' => $parentCategories,
         'subCategory' => $subCategory,
         'parentProduct' => $parentProduct,
+        'brands' => $brands,
     ]) ?>
 
 </div>

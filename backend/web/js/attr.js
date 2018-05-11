@@ -7,7 +7,6 @@ $(document).ready(function () {
     $('#attrform-maincategory label input').each(function () {
         if ($(this).is(':checked')) {
 
-
             var params = {
                 'isChecked' : true,
                 'id': $(this).val(),
@@ -111,6 +110,7 @@ $(document).ready(function () {
 
             });
         });
+
     }, 1000);
 
 
@@ -249,5 +249,20 @@ $(document).ready(function () {
             });
         }
     });
+
+
+    setTimeout(function() {
+        $('#attrform-parent_id fieldset label input').each(function () {
+            if ($(this).is(':checked')) {
+                var fieldset = $(this).parent().parent();
+                var that = $(this);
+                fieldset.find('input').each(function () {
+                    if (!$(this).is(that)) {
+                        $(this).attr('disabled', 'disabled');
+                    }
+                });
+            }
+        });
+    }, 1500);
 
 });

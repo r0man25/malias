@@ -57,5 +57,39 @@ $(document).ready(function () {
     });
 
 
+    $('#productform-category_id option').each(function () {
+        if ($(this).is(':selected')) {
+            var params = {
+                'subCategoryId': $(this).val(),
+                'productId' : $('#productform-maincategory').attr('data-id')
+            };
+
+            $.post('/product/manage/get-subcategory', params, function (data) {
+
+                if (data.success) {
+                    $("#attrsSection").remove();
+                    $("#productform-attrs").append( $('<fieldset id="attrsSection" class="fieldset">' +
+                        '<legend class="fieldset-legend">Chose product attributes</legend>' +
+                        '</fieldset>'));
+
+                    for (key in data.categoryAttrs) {
+                        $("#attrsSection").append($('' +
+                            '<label>' +
+                            '<input type="checkbox" name="ProductForm[attrs][]" value="' + key + '">' + '&nbsp;' + data.categoryAttrs[key] + '&nbsp;' +
+                            '</label>'
+                        ));
+                        if (data.productAttrs.hasOwnProperty(key)){
+                            var selector = 'input[value='+key+']';
+                            $("#attrsSection label").find(selector).prop('checked', true);
+                        }
+                    }
+                }
+
+                return false;
+            });
+        }
+    });
+
+
 
 });

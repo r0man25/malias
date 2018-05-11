@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property int $category_id
  * @property string $description
  * @property int $parent_id
+ * @property int $brand_id
  *
  * @property Category $category
  * @property Product $parent
@@ -63,6 +64,17 @@ class Product extends \yii\db\ActiveRecord
         $parentProduct = self::find()->where(['parent_id' => NULL])->asArray()->all();
         return ArrayHelper::map($parentProduct, 'id', 'title');
     }
+
+    public function getAttrs()
+    {
+        return $this->productAttrVals;
+    }
+
+    public function getAttrsAsArray()
+    {
+        return ArrayHelper::map($this->productAttrVals,'attr_id','attr_id');
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

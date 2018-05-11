@@ -18,9 +18,11 @@ class ProductForm extends Model
     public $mainCategory;
     public $category_id;
     public $parent_id;
+    public $brand_id;
     public $title;
     public $description;
     public $attrs;
+    public $product_id;
 
 
     public function rules()
@@ -29,6 +31,7 @@ class ProductForm extends Model
             [['mainCategory','category_id'], 'required'],
             [['mainCategory','category_id'], 'integer'],
             [['parent_id'], 'integer'],
+            [['brand_id'], 'integer'],
             [['title'], 'required'],
             [['title'], 'string', 'min' => 2],
             [['description'], 'string'],
@@ -41,6 +44,7 @@ class ProductForm extends Model
     {
         if ($this->validate()) {
             $product = new Product();
+            $product->brand_id = $this->brand_id;
             $product->title = $this->title;
             $product->category_id = $this->category_id;
             $product->parent_id = $this->parent_id;
@@ -62,71 +66,49 @@ class ProductForm extends Model
 
     public function update($id)
     {
-
         if ($this->validate()) {
-            $parentAttr = [];
-            $this->category_id = ArrayHelper::index($this->category_id, function ($element) {
+            $this->attrs = ArrayHelper::index($this->attrs,function ($element) {
                 return $element;
             });
-            if ($this->parent_id) {
-                foreach ($this->parent_id as $item) {
-                    $parentAttr[substr($item, 0, stripos($item, '/'))][] =
-                        substr($item, stripos($item, '/') + 1, strlen($item));
-                }
-            }
+            $product = Product::findOne($id);
+            $product->brand_id = $this->brand_id;
+            $product->title = $this->title;
+            $product->category_id = $this->category_id;
+            $product->parent_id = $this->parent_id;
+            $product->description = $this->description;
+            $product->save();
 
-            foreach ($parentAttr as $key => $value) {
-                ArrayHelper::setValue($this->category_id, $key, $value);
-            }
-//            echo "<pre>";
-//            print_r($this);
-//            echo "<pre>";die;
-//            $transaction = Yii::$app->db->beginTransaction();
-//            $attr = new Attr();
-            $attr = Attr::findOne($id);
-            $attr->title = $this->title;
-            $attr->type = $this->type;
-            $attr->unit = $this->unit;
-            $attr->save();
-
-            CategoryAttr::deleteAll("attr_id = $id");
-
-            foreach ($this->category_id as $key => $category) {
-                if (is_array($category)) {
-                    foreach ($category as $item) {
-                        $categoryAttr = new CategoryAttr();
-                        $categoryAttr->category_id = $key;
-                        $categoryAttr->attr_id = $attr->id;
-                        $categoryAttr->weight = $this->weight;
-                        $categoryAttr->parent_id = $item;
-                        $categoryAttr->save();
-                    }
+            $productAttrVal = ProductAttrVal::find()->where(['product_id' => $id])->all();
+            foreach ($productAttrVal as $item) {
+                if (!in_array($item->attr_id, $this->attrs)) {
+                    $item->delete();
                 } else {
-                    $categoryAttr = new CategoryAttr();
-                    $categoryAttr->category_id = $key;
-                    $categoryAttr->attr_id = $attr->id;
-                    $categoryAttr->weight = $this->weight;
-                    $categoryAttr->save();
+                    ArrayHelper::remove($this->attrs,$item->attr_id);
                 }
             }
-            return $attr->id;
+
+            foreach ($this->attrs as $attr) {
+                $productAttrVal = new ProductAttrVal();
+                $productAttrVal->product_id = $product->id;
+                $productAttrVal->attr_id = $attr;
+                $productAttrVal->save();
+            }
+            return $product->id;
         }
     }
 
 
 
-    public function loadAttrData(Attr $attr)
+    public function loadProductData(Product $product)
     {
-        $this->mainCategory = $attr->getMainCategoryIds();
-        $this->title = $attr->title;
-        $this->type = $attr->type;
-        $this->unit = $attr->unit;
-        $this->weight = $attr->getAttrWeight();
-        $this->attrId = $attr->id;
-        $this->mainCategoryTitle = $attr->getMainCategory();
-        $this->subCategoryTitle = $attr->getSubCategories();
-        $this->mainAttrsTitle = $attr->getMainAttr();
+        $this->mainCategory = $product->category->parent;
+        $this->category_id = $product->category_id;
+        $this->parent_id = $product->parent_id;
+        $this->brand_id = $product->brand_id;
+        $this->title = $product->title;
+        $this->description = $product->description;
+        $this->product_id = $product->id;
 
-        return $attr->id;
+        return $product->id;
     }
 }

@@ -23,10 +23,35 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            [
+                'attribute' => 'Brand',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return $data->brand->title;;
+                },
+            ],
             'title',
-            'category_id',
-            'description:ntext',
-            'parent_id',
+            [
+                'attribute' => 'Main Category',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return $data->category->parent->title;;
+                },
+            ],
+            [
+                'attribute' => 'Category',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return $data->category->title;;
+                },
+            ],
+            [
+                'attribute' => 'Main product',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return ($data->parent) ? $data->parent->brand->title .' '. $data->parent->title : "";
+                },
+            ],
 
 //            ['class' => 'yii\grid\ActionColumn'],
             [

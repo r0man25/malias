@@ -45,6 +45,7 @@ AppAsset::register($this);
     } else {
         $menuItems[] = ['label' => 'Categories', 'url' => ['/category/manage/index']];
         $menuItems[] = ['label' => 'Attributes', 'url' => ['/attr/manage/index']];
+        $menuItems[] = ['label' => 'Products', 'url' => ['/product/manage/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

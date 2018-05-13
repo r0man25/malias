@@ -8,8 +8,9 @@ use backend\models\Attr;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Product */
 
-$this->title = 'Set Product Properties';
+$this->title = 'Set Product Properties for '. $productTitle;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $productTitle, 'url' => ['view', 'id' => $productId]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-create">
@@ -40,9 +41,3 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 </div>
-
-<?php
-    $this->registerJsFile('@web/js/product.js', [
-        'depends' => \yii\web\JqueryAsset::className(),
-    ]);
-?>

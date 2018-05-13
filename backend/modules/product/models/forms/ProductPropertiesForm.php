@@ -72,18 +72,11 @@ class ProductPropertiesForm extends Model
     }
 
 
-    public function loadAttrData(Attr $attr)
+    public function loadPropertiesData($product)
     {
-        $this->mainCategory = $attr->getMainCategoryIds();
-        $this->title = $attr->title;
-        $this->type = $attr->type;
-        $this->unit = $attr->unit;
-        $this->weight = $attr->getAttrWeight();
-        $this->attrId = $attr->id;
-        $this->mainCategoryTitle = $attr->getMainCategory();
-        $this->subCategoryTitle = $attr->getSubCategories();
-        $this->mainAttrsTitle = $attr->getMainAttr();
+        foreach ($product as $prop) {
+            $this->prop[$prop->id] = (isset($prop->val)) ? $prop->val : $prop->attr_val_id;
+        }
 
-        return $attr->id;
     }
 }

@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Product */
 
-$this->title = $model->title;
+$this->title = $model->brand->title.' '.$model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,10 +29,36 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            [
+                'attribute' => 'Brand',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return $data->brand->title;;
+                },
+            ],
             'title',
-            'category_id',
+            [
+                'attribute' => 'Main product',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return ($data->parent) ? $data->parent->brand->title .' '. $data->parent->title : "";
+                },
+            ],
+            [
+                'attribute' => 'Main Category',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return $data->category->parent->title;;
+                },
+            ],
+            [
+                'attribute' => 'Category',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return $data->category->title;;
+                },
+            ],
             'description:ntext',
-            'parent_id',
         ],
     ]) ?>
 

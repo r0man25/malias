@@ -104,6 +104,7 @@ class ManageController extends Controller
 
         $product = $this->findModel($id);
         $productAttrs = $product->getAttrs();
+        $model->loadPropertiesData($productAttrs);
 
         if ($model->load(Yii::$app->request->post()) && $productId = $model->save()) {
             return $this->redirect(['view', 'id' => $productId]);
@@ -112,6 +113,8 @@ class ManageController extends Controller
         return $this->render('set-product-properties', [
             'model' => $model,
             'productAttrs' => $productAttrs,
+            'productId' => $product->id,
+            'productTitle' => $product->brand->title .' '. $product->title,
         ]);
     }
 
@@ -190,6 +193,7 @@ class ManageController extends Controller
             'subCategory' => $subCategory,
             'parentProduct' => $parentProduct,
             'brands' => $brands,
+            'product' => $product,
         ]);
     }
 

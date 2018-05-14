@@ -30,5 +30,13 @@ $this->title = 'Admin panel';
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="nav-menu-button">
+                    <?= \yii\helpers\Html::a('Dictionary', '/dictionary/manage/index') ?>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

@@ -21,6 +21,9 @@ return [
         'product' => [
             'class' => 'backend\modules\product\Module',
         ],
+        'dictionary' => [
+            'class' => 'backend\modules\dictionary\Module',
+        ],
     ],
     'components' => [
         'request' => [

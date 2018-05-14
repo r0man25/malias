@@ -28,7 +28,7 @@ class ProductForm extends Model
     public function rules()
     {
         return [
-            [['mainCategory','category_id'], 'required'],
+            [['mainCategory','category_id','brand_id'], 'required'],
             [['mainCategory','category_id'], 'integer'],
             [['parent_id'], 'integer'],
             [['brand_id'], 'integer'],

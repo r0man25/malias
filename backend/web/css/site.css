@@ -211,3 +211,30 @@ a.desc:after {
     box-shadow: 0 3px rgb(33,147,90) inset;
 }
 /*dictionary*/
+
+.product-image-wrap .product-image {
+    width: 200px;
+}
+
+.product-image-wrap {
+    margin-bottom: 20px;
+    width: 100%;
+    display: table;
+    background: rgb(245,245,245) linear-gradient(#f4f4f4, #f1f1f1);
+    padding: 1%;
+}
+
+.product-image-wrap div {
+    display: table-cell;
+    text-align: right;
+}
+
+.product-image-wrap div * {
+    display: inline;
+    margin-left: 5%;
+}
+
+.check-div {
+    background: #7FFFD4;
+    border: 2px solid #6A5ACD;
+}

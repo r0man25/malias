@@ -5,7 +5,9 @@ namespace backend\modules\product\controllers;
 use backend\models\Attr;
 use backend\models\Brand;
 use backend\models\CategoryAttr;
+use backend\models\ProductImage;
 use backend\modules\product\models\forms\ProductForm;
+use backend\modules\product\models\forms\ProductImagesForm;
 use backend\modules\product\models\forms\ProductPropertiesForm;
 use Yii;
 use backend\models\Product;
@@ -15,6 +17,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Category;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * ManageController implements the CRUD actions for Product model.
@@ -118,6 +121,40 @@ class ManageController extends Controller
         ]);
     }
 
+
+    public function actionImage($id)
+    {
+        $product = $this->findModel($id);
+        $productImages = $product->images;
+
+        $model = new ProductImagesForm($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->images = UploadedFile::getInstances($model, 'images');
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Product updated.');
+                return $this->redirect(['image', 'id' => $id]);
+            }
+        }
+
+        return $this->render('image',[
+            'model' => $model,
+            'productImages' => $productImages,
+            'product' => $product,
+        ]);
+    }
+
+
+    public function actionDeleteImage($id)
+    {
+        $productImage = ProductImage::findOne($id);
+        $productId = $productImage->product_id;
+        Yii::$app->storage->deleteFile($productImage->image);
+        $productImage->delete();
+        return $this->redirect(['image', 'id' => $productId]);
+    }
+
+
     public function actionGetSubcategory()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -206,7 +243,11 @@ class ManageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $product = $this->findModel($id);
+        foreach ($product->images as $productImage) {
+            Yii::$app->storage->deleteFile($productImage->image);
+        }
+        $product->delete();
 
         return $this->redirect(['index']);
     }

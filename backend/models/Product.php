@@ -111,4 +111,15 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProductAttrVal::className(), ['product_id' => 'id']);
     }
+
+    public function getImages()
+    {
+        return $this->hasMany(ProductImage::className(), ['product_id' => 'id']);
+    }
+
+    public function getMainImage()
+    {
+        $productImage = $this->getImages()->where('is_main = 1')->one();
+        return (isset($productImage->image)) ? Yii::$app->storage->getFile($productImage->image) : Yii::$app->storage->getFile('no-image.png');
+    }
 }

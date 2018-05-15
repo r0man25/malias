@@ -74,6 +74,7 @@ return [
                 'product/update/<id:\d+>' => 'product/manage/update',
                 'product/view/<id:\d+>' => 'product/manage/view',
                 'product/set-properties/<id:\d+>' => 'product/manage/set-product-properties',
+                'product/image/<id:\d+>' => 'product/manage/image',
             ],
         ],
     ],

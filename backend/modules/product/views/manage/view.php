@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Properties', ['set-product-properties', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Images', ['image', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -42,6 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($data) {
                     return ($data->parent) ? $data->parent->brand->title .' '. $data->parent->title : "";
+                },
+            ],
+            [
+                'attribute' => 'Main image',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return Html::img($data->getMainImage(), ['width' => '400px']);
                 },
             ],
             [

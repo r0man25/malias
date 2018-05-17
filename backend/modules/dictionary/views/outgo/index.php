@@ -6,16 +6,16 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Brands';
+$this->title = 'Outgo Types';
 $this->params['breadcrumbs'][] = ['label' => 'Dictionary', 'url' => ['/dictionary/manage/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="brand-index">
+<div class="outgo-type-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Brand', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Outgo Type', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

@@ -4,14 +4,14 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Brand */
+/* @var $model backend\models\OutgoType */
 
-$this->title = 'Create Brand';
+$this->title = 'Create Outgo Type';
 $this->params['breadcrumbs'][] = ['label' => 'Dictionary', 'url' => ['/dictionary/manage/index']];
-$this->params['breadcrumbs'][] = ['label' => 'Brands', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Outgo Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="brand-create">
+<div class="outgo-type-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

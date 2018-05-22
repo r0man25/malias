@@ -238,3 +238,71 @@ a.desc:after {
     background: #7FFFD4;
     border: 2px solid #6A5ACD;
 }
+
+.income-product-field {
+    display: table;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.income-product-field div {
+    display: table-cell;
+    padding-right: 10px;
+    width: 26%;
+}
+
+.income-product-field div:last-child {
+    /*padding-right: 0;*/
+}
+
+.income-product-field div:nth-child(4) {
+    width: 8%;
+}
+
+.income-product-field div:nth-child(5) {
+    width: 8%;
+    padding: 0;
+}
+
+.btn-rem-wrap {
+    padding: 0 !important;
+}
+
+.income-product-field div:nth-child(6) {
+    /*width: 100%;*/
+    vertical-align: top;
+    text-align: right;
+    padding: 24px 0 0 0;
+}
+
+
+
+.income-product-field div:nth-child(6) div {
+    display: inline-block;
+    width: 40px;
+}
+
+.title-wrap {
+    display: table;
+    margin-bottom: 20px;
+}
+
+.title-wrap h1 {
+    display: table-cell;
+    white-space: nowrap;
+}
+
+.btn-add-wrap {
+    display: table-cell;
+    width: 100%;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.text-error {
+    color: red;
+}
+
+.error {
+    border: 1px solid red;
+}

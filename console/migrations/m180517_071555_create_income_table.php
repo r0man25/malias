@@ -14,8 +14,8 @@ class m180517_071555_create_income_table extends Migration
     {
         $this->createTable('income', [
             'id' => $this->primaryKey(),
-            'title' => $this->string()->notNull(),
-            'date-income' => $this->integer()->notNull(),
+            'title' => $this->string()->unique()->notNull(),
+            'date_income' => $this->integer()->notNull(),
             'provider_id' => $this->integer()
         ]);
 

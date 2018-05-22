@@ -122,4 +122,10 @@ class Product extends \yii\db\ActiveRecord
         $productImage = $this->getImages()->where('is_main = 1')->one();
         return (isset($productImage->image)) ? Yii::$app->storage->getFile($productImage->image) : Yii::$app->storage->getFile('no-image.png');
     }
+
+
+    public static function getProductsByCategoryId($id, $productsArr = [])
+    {
+        return ArrayHelper::map(self::find()->where(['category_id' => $id])->andWhere(['not in','id',$productsArr])->asArray()->all(),'id','title');
+    }
 }

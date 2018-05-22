@@ -14,8 +14,8 @@ class m180517_074503_create_outgo_table extends Migration
     {
         $this->createTable('outgo', [
             'id' => $this->primaryKey(),
-            'title' => $this->string()->notNull(),
-            'date-outgo' => $this->integer()->notNull(),
+            'title' => $this->string()->unique()->notNull(),
+            'date_outgo' => $this->integer()->notNull(),
             'provider_id' => $this->integer(),
             'outgo_type_id' => $this->integer(),
         ]);

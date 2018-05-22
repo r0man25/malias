@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "provider".
@@ -15,6 +16,11 @@ use Yii;
  */
 class Provider extends \yii\db\ActiveRecord
 {
+    public static function getProvidersAsArray()
+    {
+        return ArrayHelper::map(self::find()->asArray()->all(),'id','title');
+    }
+
     /**
      * @inheritdoc
      */

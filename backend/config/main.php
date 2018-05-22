@@ -24,6 +24,9 @@ return [
         'dictionary' => [
             'class' => 'backend\modules\dictionary\Module',
         ],
+        'income' => [
+            'class' => 'backend\modules\income\Module',
+        ],
     ],
     'components' => [
         'request' => [
